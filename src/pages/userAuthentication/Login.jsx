@@ -5,12 +5,14 @@ import toast, { Toaster } from "react-hot-toast";
 import { signInWithPopup, GoogleAuthProvider, getAuth } from "firebase/auth";
 import app from "../../firebase/firebase.config";
 import usePageTitle from "../shared/usePageTitle";
+import useAxiosPublic from "../../hooks/axios/useAxiosPublic";
 
 const Login = () => {
     usePageTitle('MyTask');
-    const {signIn} = useContext(AuthContext);
+    const {signIn, setUser} = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
+    const axiosPublic = useAxiosPublic();
 
     // if user was redirected to this page from Single Job page with :id, show a toast message "You have to log in first to view details"
     if(location?.state){
@@ -28,18 +30,27 @@ const Login = () => {
             const {displayName, photoURL, email} = user;
             const createdAt = user?.metadata?.creationTime;
             const newUser = { name : displayName , photoURL ,email, createdAt : createdAt};
-            fetch('http://localhost:3000/api/users', {
-                method: 'POST',
-                headers:{
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(newUser)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                }
-                )
+            // fetch('http://localhost:3000/api/users', {
+            //     method: 'POST',
+            //     headers:{
+            //         'content-type': 'application/json'
+            //     },
+            //     body: JSON.stringify(newUser)
+            // })
+            //     .then(res => res.json())
+            //     .then(data => {
+            //         console.log(data);
+            //     }
+            //     )
+
+            axiosPublic.post('/users', newUser)
+                .then(res => {
+                    console.log(res.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+
             setUser({displayName, photoURL, email});
             toast.success("Successfully Logged In")
             // ...
@@ -64,7 +75,7 @@ const Login = () => {
                 toast.success("Successfully logged in")
                 
                 // navigate after login
-                navigate( location?.state ? location.state : '/');
+                navigate( location?.state ? location.state : '/dashboard');
             })
             .catch((error) => toast.error("Email or Password didn't matched"));
     }

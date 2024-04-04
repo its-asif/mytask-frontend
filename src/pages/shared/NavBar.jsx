@@ -14,13 +14,9 @@ const NavBar = () => {
     const navlinks = (
         <>
             <li><NavLink to="/">Home</NavLink></li>
-
-            { !user && <li><NavLink to="/register">Register</NavLink></li>}
-            { user &&(
-                <div className="flex flex-col lg:flex-row">
-                        <li><NavLink to="/profile">Profile</NavLink></li>
-                    </div> )
-            }
+            <li><NavLink to="/dashboard">Dashboard</NavLink></li>
+            {/* <li><NavLink to="/tasks">Tasks</NavLink></li> */}
+            
         </>)
 
     const handleSignOut = () =>{
@@ -42,7 +38,7 @@ const NavBar = () => {
                     </ul>
                     </div>
 
-                    <a className="font-bold text-xl md:text-4xl w-full">Website Name </a>
+                    <a className="font-bold text-xl md:text-4xl w-full">MyTask </a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">

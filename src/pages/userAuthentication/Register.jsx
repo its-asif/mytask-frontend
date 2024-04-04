@@ -28,18 +28,28 @@ const Register = () => {
             const {displayName, photoURL, email} = user;
             const createdAt = user?.metadata?.creationTime;
             const newUser = { name : displayName , photoURL ,email, createdAt : createdAt};
-            fetch('http://localhost:3000/api/users', {
-                method: 'POST',
-                headers:{
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(newUser)
+            // fetch('http://localhost:3000/api/users', {
+            //     method: 'POST',
+            //     headers:{
+            //         'content-type': 'application/json'
+            //     },
+            //     body: JSON.stringify(newUser)
+            // })
+            //     .then(res => res.json())
+            //     .then(data => {
+            //         console.log(data);
+            //     }
+            //     )
+
+            
+            axiosPublic.post('/users', newUser)
+            .then(response => {
+                console.log(response);
             })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                }
-                )
+            .catch(err => {
+                console.log(err);
+            })
+
             setUser({displayName, photoURL, email});
             toast.success("Successfully Logged In")
             // ...
@@ -89,21 +99,30 @@ const Register = () => {
                 
                 const createdAt = res.user?.metadata?.creationTime;
                 const user = { name, photoURL, email, createdAt : createdAt};
-                fetch('http://localhost:3000/api/users',{
-                    method : 'POST',
-                    headers: {
-                        'content-type' : 'application/json'
-                    },
-                    body: JSON.stringify(user)
+                // fetch('http://localhost:3000/api/users',{
+                //     method : 'POST',
+                //     headers: {
+                //         'content-type' : 'application/json'
+                //     },
+                //     body: JSON.stringify(user)
 
 
+                // })
+                //     .then(result => result.json())
+                //     .then(data =>{
+                //         console.log(data);
+                //     })
+
+                axiosPublic.post('/users', user)
+                .then(response => {
+                    console.log(response);
                 })
-                    .then(result => result.json())
-                    .then(data =>{
-                        console.log(data);
-                    })
+                .catch(err => {
+                    console.log(err);
+                })
 
-            })
+                navigate( '/dashboard');
+            })  
             .catch( err => console.log(err));
 
             // const auth = getAuth();
